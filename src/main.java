@@ -4,8 +4,6 @@ public class main {
         print("teste");
         print("teste");
         print("teste");
-        print("teste");
-        print("teste");
     }
 
     public static void print(String text){
