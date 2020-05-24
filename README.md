@@ -1,13 +1,13 @@
 # Projeto final ES1 2019/2020
 ## Problema
-O projeto deverá ser gerido de acordo com a metodologia Scrum. Neste sentido, os alunos deverão
+A loja virtual Ablazon recebe encomendas de livros de bibliotecas de vários países. As encomendas obedecem sempre ao seguinte workflow
 
-- Reunir no início de cada aula durante 10 minutos para discutir o que foi realizado e os obstáculos que estão a enfrentar;
+- A encomenda é submetida na plataforma online da loja. Para além dos dados dos livros e quantidades, pode ser também incluído o código de um voucher;
 
-- Atribuír o papel de Product Owner semanalmente a um dos elementos do grupo. Este aluno ficará responsável pela gestão do Product Backlog e Sprint Backlog e representará a equipa perante o docente;
+- Depois de validar uma encomenda, a aplicação envia uma confirmação da receção da mesma para o e-mail do responsável da biblioteca. Esta confirmação inclui a data prevista de entrega e o link para fazer o acompanhamento da mesma;
 
-- Distribuir os requisitos pelos elementos do grupo, de forma a que todos tenham de passar por todo o processo de desenvolvimento;
+- A mudança de estado da encomenda (ex: processada->enviada) dá origem ao envio de um e-mail para o responsável pela biblioteca;
 
-- Manter o Trello atualizado com o Backlog do projeto, as tarefas do próximo Sprint, as tarefas do Sprint Atual, as tarefas em revisão pelo docente e as tarefas concluídas. As tarefas associadas à implementação de requisitos devem ter os requisitos especificados no formato de User Story, tal como foi estudado nas aulas;
+- Os funcionários do loja podem enviar parte da encomenda para os clientes se verificarem que alguns items podem sofrer atrasos significativos;
 
-- Apresentar semanalmente ao docente o resultado das tarefas concluídas na reunião de revisão. Para que o trabalho fique visível para todos os elementos do grupo (incluindo o docente), a versão da solução implementada deverá ficar disponível no GitHub. Para esse efeito, o docente das práticas deverá ser adicionado ao repositório como elemento da equipa.
+- A aplicação fornece uma API à transportadora para registar a entrega dos livros ao cliente. Sempre que a transportadora comunicar uma entrega, a aplicação deverá enviar um e-mail com um link para os clientes darem feedback do serviço.
