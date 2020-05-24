@@ -1,5 +1,5 @@
-# projetoES1
-## problema
+# Projeto final ES1 2019/2020
+## Problema
 O projeto deverá ser gerido de acordo com a metodologia Scrum. Neste sentido, os alunos deverão
 
 - Reunir no início de cada aula durante 10 minutos para discutir o que foi realizado e os obstáculos que estão a enfrentar;
