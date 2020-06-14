@@ -34,14 +34,6 @@ public class Repositorio_Ablazon {
         return true;
     }
 
-    public void adicionarEstados(String estado_encomenda){
-        Integer id = 1;
-        if(estados.size()!= 0)
-            id = estados.get(estados.size()-1).getID() + 1;
-
-        estados.add(new Estado_Encomenda(id, estado_encomenda));
-    }
-
     public void adicionarLivro(Livro livro, Integer quantidade){
         if(quantidade < 0)
             return;
@@ -77,23 +69,22 @@ public class Repositorio_Ablazon {
         return false;
     }
 
-    private Boolean UtilizadorExisteNIF(Integer NIF){
-        for(Integer i = 0; i < utilizadores.size(); i++) {
-            if (utilizadores.get(i).getNif() == NIF) {
-                return true;
-            }
-        }
-        return false;
+    public void adicionarEstados(String estado_encomenda){
+        Integer id = 1;
+        if(estados.size()!= 0)
+            id = estados.get(estados.size()-1).getID() + 1;
+
+        estados.add(new Estado_Encomenda(id, estado_encomenda));
     }
 
     public Funcionario_Biblioteca getClienteNIF(Integer NIF){
         for(Integer i = 0; i < utilizadores.size(); i++){
             Utilizador user = utilizadores.get(i);
-             if(user.tipoUser().equals("FuncionarioBiblioteca")){
-                 if(user.getNif().equals(NIF)){
-                     return (Funcionario_Biblioteca) user;
-                 }
-             }
+            if(user.tipoUser().equals("FuncionarioBiblioteca")){
+                if(user.getNif().equals(NIF)){
+                    return (Funcionario_Biblioteca) user;
+                }
+            }
         }
 
         return null;
@@ -112,6 +103,22 @@ public class Repositorio_Ablazon {
         return null;
     }
 
+    public void adicionarVouchers(Voucher voucher){
+        vouchers.add(voucher);
+    }
+
+    public ArrayList<Encomenda> getEncomendasCliente(Funcionario_Biblioteca funcionario_biblioteca){
+        ArrayList<Encomenda> resultado = new ArrayList<>();
+
+        for(Integer i = 0; i < encomendas.size(); i++){
+            Encomenda aux = encomendas.get(i);
+            if(aux.getCliente() == funcionario_biblioteca)
+                resultado.add(aux);
+        }
+
+        return resultado;
+    }
+
     public Itens_Stock getLivroTituloAutorAnoEdicao(String titulo, String autor, Integer ano_edicao){
         for(Integer i = 0; i < livros.size(); i++){
             Itens_Stock aux = livros.get(i);
@@ -120,6 +127,16 @@ public class Repositorio_Ablazon {
                 if(aux2.getAutor().equals(autor))
                     if(aux2.getAnoEdicao().equals(ano_edicao))
                         return aux;
+        }
+
+        return null;
+    }
+
+    public Feedback_Encomenda getFeedbackEncomendaCliente(Integer id_encomenda, Integer NIF){
+        for(Integer i = 0; i < feedbacks.size(); i++){
+            Feedback_Encomenda aux = feedbacks.get(i);
+            if(aux.getCliente().getNif() == NIF && aux.getEncomenda().getId() == id_encomenda)
+                return aux;
         }
 
         return null;
@@ -134,4 +151,14 @@ public class Repositorio_Ablazon {
 
         return null;
     }
+
+    private Boolean UtilizadorExisteNIF(Integer NIF){
+        for(Integer i = 0; i < utilizadores.size(); i++) {
+            if (utilizadores.get(i).getNif() == NIF) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
