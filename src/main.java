@@ -1,9 +1,13 @@
+import Encomenda.Encomenda;
+import Stock.Itens_Encomenda;
 import Stock.Itens_Stock;
 import Stock.Livro;
 import Utilizadores.Funcionario_Ablazon;
 import Utilizadores.Funcionario_Biblioteca;
 import static extras.funcoes_uteis.*;
 import interfaces.*;
+
+import java.util.ArrayList;
 
 public class main {
     public static void main(String args[]){
@@ -15,8 +19,8 @@ public class main {
         repo.adicionarUtilizador(new Funcionario_Ablazon("BrunoLopes", "123456", "Bruno Lopes", "rua nao sei", 123456789, 921234567, "email@email.com"));
 
         //clientes
-        repo.adicionarUtilizador(new Funcionario_Biblioteca("PedroCosta", "123456", "Pedro Costa", "rua nao sei", 123456787, 921234567, "email@email.com"));
-        repo.adicionarUtilizador(new Funcionario_Biblioteca("GoncaloCosta", "123456", "Goncalo Costa", "rua nao sei", 123456788, 921234567, "email@email.com"));
+        repo.adicionarUtilizador(new Funcionario_Biblioteca("PedroCosta", "123456", "Pedro Costa", "rua nao sei", 123456787, 921234567, "cliente1@email.com"));
+        repo.adicionarUtilizador(new Funcionario_Biblioteca("GoncaloCosta", "123456", "Goncalo Costa", "rua nao sei", 123456788, 921234567, "cliente2@email.com"));
 
         //testar os gets user
         repo.getUserNIF(123456788).show();
@@ -30,17 +34,17 @@ public class main {
 
         //registo dos livros no repositorio
         repo.adicionarLivro(livro1, 3);
-        ecreverQuantLivros(repo, "livro 1", "ninguem", 2020);
+        escreverQuantLivros(repo, "livro 1", "ninguem", 2020);
         repo.adicionarLivro(livro2, 0);
-        ecreverQuantLivros(repo, "livro 2", "ninguem", 2019);
+        escreverQuantLivros(repo, "livro 2", "ninguem", 2019);
 
 
         //teste das protecoes
         repo.adicionarLivro(livro1, 2);
         repo.removerUmLivro(livro1);
         repo.removerUmLivro(livro2);
-        ecreverQuantLivros(repo, "livro 1", "ninguem", 2020);
-        ecreverQuantLivros(repo, "livro 2", "ninguem", 2019);
+        escreverQuantLivros(repo, "livro 1", "ninguem", 2020);
+        escreverQuantLivros(repo, "livro 2", "ninguem", 2019);
 
         //criacao de estados das encomendas
         repo.adicionarEstados("A aguardar processamento");
@@ -51,9 +55,26 @@ public class main {
         //teste de insercao e incremento do ID
         print("Estado com id = 2: " + repo.getEstadoEncomendaID(2).getDesignacao());
         print("Estado com id = 4: " + repo.getEstadoEncomendaID(4).getDesignacao());
+
+        //encomendas
+        //lista de livros
+        ArrayList<Itens_Encomenda> livros = new ArrayList<>();
+        livros.add(new Itens_Encomenda(livro1, 1));
+        livros.add(new Itens_Encomenda(livro2, 2));
+        Encomenda enc = new Encomenda(livros, (Funcionario_Biblioteca) repo.getUserNIF(123456788));
+
+        Encomenda enc2 = new Encomenda(livros, (Funcionario_Biblioteca) repo.getUserNIF(123456787));
+
+        repo.adicionarEncomenda(enc);
+        repo.adicionarEncomenda(enc2);
+
+        enc.setEstado(repo.getEstadoEncomendaID(1));
+        enc.setEstado(repo.getEstadoEncomendaID(2));
+        enc.setEstado(repo.getEstadoEncomendaID(3));
+        enc2.setEstado(repo.getEstadoEncomendaID(1));
     }
 
-    private static void ecreverQuantLivros(Repositorio_Ablazon repo, String titulo, String autor, Integer ano_edicao){
+    private static void escreverQuantLivros(Repositorio_Ablazon repo, String titulo, String autor, Integer ano_edicao){
         Itens_Stock aux;
         aux = repo.getLivroTituloAutorAnoEdicao(titulo, autor, ano_edicao);
         print("quantidade [" + aux.getLivro().getTitulo() + "]: " + aux.getQuantidade());

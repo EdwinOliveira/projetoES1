@@ -25,6 +25,10 @@ public class Encomenda {
         return id;
     }
 
+    public void setId(Integer id){
+        this.id = id;
+    }
+
     public Funcionario_Biblioteca getCliente(){
         return cliente;
     }
@@ -57,6 +61,11 @@ public class Encomenda {
         this.estado = estado;
 
         EmailInterface apiEmail = new EmailAPI();
-        apiEmail.sendEmail();
+        apiEmail.setOrigem("Ablazon@email.com");
+        apiEmail.setDestino(cliente.getEmail());
+        apiEmail.setMensagem("Esta mensagem foi gerada pelo sistema automaticamente:\n" +
+                "Caro " + cliente.getNome() + ",\n" +
+                "A sua encomenda com o ID [" + id + "] está agora no seguinte estado: " + estado.getDesignacao());
+        apiEmail.enviarEmail();
     }
 }

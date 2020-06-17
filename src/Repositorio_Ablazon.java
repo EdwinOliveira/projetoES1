@@ -22,8 +22,18 @@ public class Repositorio_Ablazon {
         vouchers = new ArrayList<>();
     }
 
-    public void adicionarEncomenda(Encomenda encomenda){
+    public boolean adicionarEncomenda(Encomenda encomenda){
+        if (encomenda == null)
+            return false;
+
+        if (encomendas.size() == 0)
+            encomenda.setId(1);
+        else
+            encomenda.setId(encomendas.get(encomendas.size()-1).getId() + 1);
+
         encomendas.add(encomenda);
+
+        return true;
     }
 
     public Boolean adicionarUtilizador(Utilizador utilizador){
