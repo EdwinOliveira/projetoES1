@@ -63,7 +63,7 @@ public class Encomenda {
         EmailInterface apiEmail = new EmailAPI();
         apiEmail.setOrigem("Ablazon@email.com");
         apiEmail.setDestino(cliente.getEmail());
-        apiEmail.setMensagem("Esta mensagem foi gerada pelo sistema automaticamente:\n" +
+        apiEmail.setMensagem("Esta mensagem foi gerada pelo sistema automaticamente!\n" +
                 "Caro " + cliente.getNome() + ",\n" +
                 "A sua encomenda com o ID [" + id + "] está agora no seguinte estado: " + estado.getDesignacao());
         apiEmail.enviarEmail();
