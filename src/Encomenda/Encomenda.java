@@ -4,6 +4,8 @@ import Stock.Itens_Encomenda;
 import Utilizadores.Funcionario_Biblioteca;
 
 import java.util.ArrayList;
+import interfaces.EmailInterface;
+import APIs.EmailAPI;
 
 public class Encomenda {
     Integer id;
@@ -51,4 +53,10 @@ public class Encomenda {
         this.voucher = voucher;
     }
 
+    public void setEstado(Estado_Encomenda estado){
+        this.estado = estado;
+
+        EmailInterface apiEmail = new EmailAPI();
+        apiEmail.sendEmail();
+    }
 }

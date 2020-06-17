@@ -3,6 +3,7 @@ import Stock.Livro;
 import Utilizadores.Funcionario_Ablazon;
 import Utilizadores.Funcionario_Biblioteca;
 import static extras.funcoes_uteis.*;
+import interfaces.*;
 
 public class main {
     public static void main(String args[]){
