@@ -1,4 +1,5 @@
 package Utilizadores;
+import static extras.funcoes_uteis.*;
 
 public class Utilizador {
     private String nome_utilizador;
@@ -63,8 +64,20 @@ public class Utilizador {
         this.email = email;
     }
 
-    public String tipoUser(){
-        return null;
+    public void show(){
+        print(
+                "Nome: " + nome + "\n" +
+                "NIF: " + nif + "\n" +
+                "Telefone: " + telefone + "\n" +
+                "Morada: " + morada + "\n" +
+                "Email: " + email + "\n" +
+                "Username: " + nome_utilizador + "\n" +
+                "Palavra-passe: " + palavra_passe + "\n"
+                );
+
+
+        this.morada = morada;
+        this.email = email;
     }
 
 }

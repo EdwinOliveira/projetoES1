@@ -6,8 +6,4 @@ public class Funcionario_Ablazon extends Utilizador {
         super(nome_utilizador, palavra_passe, nome, morada, nif, telefone, email);
     }
 
-    @Override
-    public String tipoUser(){
-        return "FuncionarioAblazon";
-    }
 }

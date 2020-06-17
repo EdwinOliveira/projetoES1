@@ -77,26 +77,11 @@ public class Repositorio_Ablazon {
         estados.add(new Estado_Encomenda(id, estado_encomenda));
     }
 
-    public Funcionario_Biblioteca getClienteNIF(Integer NIF){
+    public Utilizador getUserNIF(Integer NIF){
         for(Integer i = 0; i < utilizadores.size(); i++){
             Utilizador user = utilizadores.get(i);
-            if(user.tipoUser().equals("FuncionarioBiblioteca")){
-                if(user.getNif().equals(NIF)){
-                    return (Funcionario_Biblioteca) user;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public Funcionario_Ablazon getFuncionarioNIF(Integer NIF){
-        for(Integer i = 0; i < utilizadores.size(); i++){
-            Utilizador user = utilizadores.get(i);
-            if(user.tipoUser().equals("FuncionarioAblazon")){
-                if(user.getNif().equals(NIF)){
-                    return (Funcionario_Ablazon) user;
-                }
+            if(user.getNif().equals(NIF)){
+                return user;
             }
         }
 

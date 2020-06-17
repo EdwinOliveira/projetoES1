@@ -2,6 +2,7 @@ import Stock.Itens_Stock;
 import Stock.Livro;
 import Utilizadores.Funcionario_Ablazon;
 import Utilizadores.Funcionario_Biblioteca;
+import static extras.funcoes_uteis.*;
 
 public class main {
     public static void main(String args[]){
@@ -17,10 +18,10 @@ public class main {
         repo.adicionarUtilizador(new Funcionario_Biblioteca("GoncaloCosta", "123456", "Goncalo Costa", "rua nao sei", 123456788, 921234567, "email@email.com"));
 
         //testar os gets user
-        print("nome: " + repo.getClienteNIF(123456788).getNome());
-        print("nome: " + repo.getFuncionarioNIF(123456789).getNome());
-        print("nome: " + repo.getClienteNIF(123456787).getNome());
-        print("nome: " + repo.getFuncionarioNIF(123456786).getNome());
+        repo.getUserNIF(123456788).show();
+        repo.getUserNIF(123456789).show();
+        repo.getUserNIF(123456787).show();
+        repo.getUserNIF(123456786).show();
 
         //criacao de livros
         Livro livro1 = new Livro("livro 1", "ninguem", "ninguem tambem", "algo", 2020);
@@ -49,10 +50,6 @@ public class main {
         //teste de insercao e incremento do ID
         print("Estado com id = 2: " + repo.getEstadoEncomendaID(2).getDesignacao());
         print("Estado com id = 4: " + repo.getEstadoEncomendaID(4).getDesignacao());
-    }
-
-    public static void print(String text){
-        System.out.println(text);
     }
 
     private static void ecreverQuantLivros(Repositorio_Ablazon repo, String titulo, String autor, Integer ano_edicao){
