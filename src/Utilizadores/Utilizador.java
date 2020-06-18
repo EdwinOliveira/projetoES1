@@ -2,6 +2,7 @@ package Utilizadores;
 import static extras.funcoes_uteis.*;
 
 public class Utilizador {
+    private Integer id;
     private String nome_utilizador;
     private String palavra_passe;
     private String nome;
@@ -18,6 +19,13 @@ public class Utilizador {
         this.nif = nif;
         this.telefone = telefone;
         this.email = email;
+    }
+    public Integer getId(){
+        return id;
+    }
+
+    public void setId(Integer id){
+        this.id = id;
     }
 
     public String getNomeUtilizador(){
@@ -66,18 +74,15 @@ public class Utilizador {
 
     public void show(){
         print(
-                "Nome: " + nome + "\n" +
-                "NIF: " + nif + "\n" +
-                "Telefone: " + telefone + "\n" +
-                "Morada: " + morada + "\n" +
-                "Email: " + email + "\n" +
-                "Username: " + nome_utilizador + "\n" +
-                "Palavra-passe: " + palavra_passe + "\n"
-                );
-
-
-        this.morada = morada;
-        this.email = email;
+            "Id: " + id + "\n" +
+            "Nome: " + nome + "\n" +
+            "NIF: " + nif + "\n" +
+            "Telefone: " + telefone + "\n" +
+            "Morada: " + morada + "\n" +
+            "Email: " + email + "\n" +
+            "Username: " + nome_utilizador + "\n" +
+            "Palavra-passe: " + palavra_passe + "\n"
+        );
     }
 
 }

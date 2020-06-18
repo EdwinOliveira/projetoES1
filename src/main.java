@@ -1,82 +1,191 @@
-import Encomenda.Encomenda;
+import APIs.FuncionarioAblazonAPI;
+import APIs.FuncionarioBibliotecaAPI;
+import APIs.TransportadoraAPI;
+import BD.Repositorio_Ablazon;
+import Encomenda.*;
 import Stock.Itens_Encomenda;
 import Stock.Itens_Stock;
 import Stock.Livro;
 import Utilizadores.Funcionario_Ablazon;
 import Utilizadores.Funcionario_Biblioteca;
+import Utilizadores.Utilizador;
+import interfaces.FuncionarioAblazonInterface;
+import interfaces.FuncionarioBibliotecaInterface;
+import interfaces.TransportadoraInterface;
+
 import static extras.funcoes_uteis.*;
-import interfaces.*;
 
 import java.util.ArrayList;
 
 public class main {
     public static void main(String args[]){
-        Repositorio_Ablazon repo = new Repositorio_Ablazon();
+        Utilizador master = new Funcionario_Ablazon("master", "123456", "Master", "rua nao sei", 123456781, 921234561, "master@email.com");
+        master.setId(Repositorio_Ablazon.getNextIdUtilizador());
+        Repositorio_Ablazon.adicionarUtilizador(master);
 
-        //criacao de utilizadores de teste
-        //funcionarios
-        repo.adicionarUtilizador(new Funcionario_Ablazon("José Carlos", "123456", "José Carlos", "rua nao sei", 123456786, 921234567, "email@email.com"));
-        repo.adicionarUtilizador(new Funcionario_Ablazon("BrunoLopes", "123456", "Bruno Lopes", "rua nao sei", 123456789, 921234567, "email@email.com"));
+        //----------------------------------------------------------------------------------------------------
+        //                          login na API do funcionario ablazon e criacao dos utilizadores
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        FuncionarioAblazonInterface funcionario_ablazon = new FuncionarioAblazonAPI();
 
-        //clientes
-        repo.adicionarUtilizador(new Funcionario_Biblioteca("PedroCosta", "123456", "Pedro Costa", "rua nao sei", 123456787, 921234567, "cliente1@email.com"));
-        repo.adicionarUtilizador(new Funcionario_Biblioteca("GoncaloCosta", "123456", "Goncalo Costa", "rua nao sei", 123456788, 921234567, "cliente2@email.com"));
+        funcionario_ablazon.login("master", "123456");
+        //registar um novo utilizador
+        //nif = 123456786
+        funcionario_ablazon.registarNovoUtilizador(new Funcionario_Ablazon("josecarlos", "123456", "José Carlos", "rua nao sei", 123456786, 921234567, "jose.carlos@email.com"));
+        //nif = 123456789
+        funcionario_ablazon.registarNovoUtilizador(new Funcionario_Ablazon("brunolopes", "123456", "Bruno Lopes", "rua nao sei", 123456789, 921234566, "bruno.lopes@email.com"));
+        //nif = 123456787
+        funcionario_ablazon.registarNovoUtilizador(new Funcionario_Biblioteca("pedrocosta", "123456", "Pedro Costa", "rua nao sei", 123456787, 921234568, "pedro.costa@email.com"));
 
-        //testar os gets user
-        repo.getUserNIF(123456788).show();
-        repo.getUserNIF(123456789).show();
-        repo.getUserNIF(123456787).show();
-        repo.getUserNIF(123456786).show();
+        //login com um utilizador negado
+        funcionario_ablazon.login("pedrocosta", "123456");
+        //nif = 123456788
+        funcionario_ablazon.registarNovoUtilizador(new Funcionario_Biblioteca("goncalocosta", "123456", "Goncalo Costa", "rua nao sei", 123456788, 921234569, "goncalo.costa@email.com"));
 
-        //criacao de livros
-        Livro livro1 = new Livro("livro 1", "ninguem", "ninguem tambem", "algo", 2020);
-        Livro livro2 = new Livro("livro 2", "ninguem", "ninguem tambem", "algo", 2019);
-
-        //registo dos livros no repositorio
-        repo.adicionarLivro(livro1, 3);
-        escreverQuantLivros(repo, "livro 1", "ninguem", 2020);
-        repo.adicionarLivro(livro2, 0);
-        escreverQuantLivros(repo, "livro 2", "ninguem", 2019);
+        //login com um utilizador permitido
+        funcionario_ablazon.login("josecarlos", "123456");
+        //nif = 123456788
+        funcionario_ablazon.registarNovoUtilizador(new Funcionario_Biblioteca("goncalocosta", "123456", "Goncalo Costa", "rua nao sei", 123456788, 921234569, "goncalo.costa@email.com"));
 
 
-        //teste das protecoes
-        repo.adicionarLivro(livro1, 2);
-        repo.removerUmLivro(livro1);
-        repo.removerUmLivro(livro2);
-        escreverQuantLivros(repo, "livro 1", "ninguem", 2020);
-        escreverQuantLivros(repo, "livro 2", "ninguem", 2019);
+        //----------------------------------------------------------------------------------------------------
+        //                          login na API do funcionario biblioteca
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        FuncionarioBibliotecaInterface funcionario_biblioteca = new FuncionarioBibliotecaAPI();
 
-        //criacao de estados das encomendas
-        repo.adicionarEstados("A aguardar processamento");
-        repo.adicionarEstados("Processada");
-        repo.adicionarEstados("Enviada");
-        repo.adicionarEstados("Entregue");
+        //login com user nao autorizado
+        funcionario_biblioteca.login("brunolopes", "123456");
+        //login com user autorizado
+        funcionario_biblioteca.login("goncalocosta", "123456");
 
-        //teste de insercao e incremento do ID
-        print("Estado com id = 2: " + repo.getEstadoEncomendaID(2).getDesignacao());
-        print("Estado com id = 4: " + repo.getEstadoEncomendaID(4).getDesignacao());
+        //----------------------------------------------------------------------------------------------------
+        //                          apresentacao do perfil dos utilizadores
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        funcionario_ablazon.perfilUtilizador();
+        funcionario_biblioteca.perfilUtilizador();
 
-        //encomendas
-        //lista de livros
+        //----------------------------------------------------------------------------------------------------
+        //                          registar entrada de livros no armazem
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        funcionario_ablazon.registarNovoLivro(3, "123456", "livro 1", "ninguem", "ninguem tambem", 2020);
+        funcionario_ablazon.registarNovoLivro(5, "123457", "livro 2", "ninguem", "ninguem tambem", 2019);
+        funcionario_ablazon.registarNovoLivro(3, "123456");
+        funcionario_ablazon.registarNovoLivro(3, "123458");
+
+        //----------------------------------------------------------------------------------------------------
+        //                          registar estados de encomenda
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        //nao alterar esta ordem!!!!!!
+        funcionario_ablazon.registarNovoEstadoEncomenda("A aguardar processamento");
+        funcionario_ablazon.registarNovoEstadoEncomenda("Processada");
+        funcionario_ablazon.registarNovoEstadoEncomenda("Enviada");
+        funcionario_ablazon.registarNovoEstadoEncomenda("Entregue");
+
+        //----------------------------------------------------------------------------------------------------
+        //                          registar vouchers
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        //defenido um maximo de 2300 no ano e minimo de 2000
+        funcionario_ablazon.registarNovoVoucher((float) 20.0, "desconto 1", "desconto de teste", "20/8/2020");
+        funcionario_ablazon.registarNovoVoucher((float) 20.0, "desconto 1", "desconto de teste", "29/2/2019");
+        funcionario_ablazon.registarNovoVoucher((float) 20.0, "desconto 1", "desconto de teste", "29/2/2020");
+
+        //forcar a insercao de um voucher antigo para testes
+        Voucher voucherAux = new Voucher((float) 20.0, "desconto 1", "desconto de teste", "20/5/2020");
+        voucherAux.setId(Repositorio_Ablazon.getNextIdVoucher());
+        Repositorio_Ablazon.adicionarVouchers(voucherAux);
+
+        //----------------------------------------------------------------------------------------------------
+        //                          registar encomendas
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+
         ArrayList<Itens_Encomenda> livros = new ArrayList<>();
-        livros.add(new Itens_Encomenda(livro1, 1));
-        livros.add(new Itens_Encomenda(livro2, 2));
-        Encomenda enc = new Encomenda(livros, (Funcionario_Biblioteca) repo.getUserNIF(123456788));
+        livros.add(new Itens_Encomenda(Repositorio_Ablazon.getLivroISBN("123456").getLivro(), 4));
+        livros.add(new Itens_Encomenda(Repositorio_Ablazon.getLivroISBN("123457").getLivro(), 3));
 
-        Encomenda enc2 = new Encomenda(livros, (Funcionario_Biblioteca) repo.getUserNIF(123456787));
+        funcionario_biblioteca.registarNovaEncomenda(livros, null);
+        funcionario_biblioteca.registarNovaEncomenda(livros, null);
+        print("-------------------------------");
+        funcionario_biblioteca.login("pedrocosta", "123456");
+        funcionario_biblioteca.registarNovaEncomenda(livros, Repositorio_Ablazon.getVoucherID(1));
+        print("-------------------------------");
+        funcionario_biblioteca.registarNovaEncomenda(livros, Repositorio_Ablazon.getVoucherID(2));
 
-        repo.adicionarEncomenda(enc);
-        repo.adicionarEncomenda(enc2);
+        //----------------------------------------------------------------------------------------------------
+        //                          processar encomendas
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
 
-        enc.setEstado(repo.getEstadoEncomendaID(1));
-        enc.setEstado(repo.getEstadoEncomendaID(2));
-        enc.setEstado(repo.getEstadoEncomendaID(3));
-        enc2.setEstado(repo.getEstadoEncomendaID(1));
+        funcionario_ablazon.processarEncomenda(1, "15/6/2020");
+        print("-------------------------------");
+        funcionario_ablazon.processarEncomenda(1, "18/9/2020");
+        print("-------------------------------");
+        funcionario_ablazon.processarEncomenda(1, "18/9/2020");
+        print("-------------------------------");
+        funcionario_ablazon.processarEncomenda(3, "18/7/2020");
+
+        //----------------------------------------------------------------------------------------------------
+        //                          enviar encomendas
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+
+        funcionario_ablazon.enviarEncomenda(1);
+        print("-------------------------------");
+        funcionario_ablazon.enviarEncomenda(1);
+        print("-------------------------------");
+        funcionario_ablazon.enviarEncomenda(2);
+        print("-------------------------------");
+        funcionario_ablazon.enviarEncomenda(3);
+
+        //----------------------------------------------------------------------------------------------------
+        //                          entregar encomendas
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        TransportadoraInterface transportadora = new TransportadoraAPI();
+
+        transportadora.entregarEncomenda(1);
+        print("-------------------------------");
+        transportadora.entregarEncomenda(1);
+        print("-------------------------------");
+        transportadora.entregarEncomenda(2);
+        print("-------------------------------");
+        transportadora.entregarEncomenda(3);
+
+        //----------------------------------------------------------------------------------------------------
+        //                          mostrar dados pessoais e encomendas
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+        funcionario_biblioteca.show();
+        print("-------------------------------");
+        funcionario_biblioteca.showEncomendas();
+        print("-------------------------------");
+        funcionario_biblioteca.login("goncalocosta", "123456");
+        funcionario_biblioteca.show();
+        print("-------------------------------");
+        funcionario_biblioteca.showEncomendas();
+
+        //----------------------------------------------------------------------------------------------------
+        //                          feedback de encomendas
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+
+        funcionario_biblioteca.fornecerFeadbackEncomenda(Repositorio_Ablazon.getEncomendaId(1), "rápida entrega", 6);
+        funcionario_biblioteca.fornecerFeadbackEncomenda(Repositorio_Ablazon.getEncomendaId(1), "rápida entrega", 5);
+        funcionario_biblioteca.fornecerFeadbackEncomenda(Repositorio_Ablazon.getEncomendaId(2), "rápida entrega", 6);
+        funcionario_biblioteca.fornecerFeadbackEncomenda(Repositorio_Ablazon.getEncomendaId(3), "rápida entrega", 5);
+
+        //----------------------------------------------------------------------------------------------------
+        //                          ver stock
+        //----------------------------------------------------------------------------------------------------
+        print("-------------------------------------------------------------------------------------------\n");
+
+        funcionario_ablazon.showStock();
     }
 
-    private static void escreverQuantLivros(Repositorio_Ablazon repo, String titulo, String autor, Integer ano_edicao){
-        Itens_Stock aux;
-        aux = repo.getLivroTituloAutorAnoEdicao(titulo, autor, ano_edicao);
-        print("quantidade [" + aux.getLivro().getTitulo() + "]: " + aux.getQuantidade());
-    }
 }

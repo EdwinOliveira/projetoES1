@@ -9,8 +9,12 @@ public class Estado_Encomenda {
         this.designacao = designacao;
     }
 
-    public Integer getID(){
+    public Integer getId(){
         return id;
+    }
+
+    public void setId(Integer id){
+        this.id = id;
     }
 
     public String getDesignacao(){

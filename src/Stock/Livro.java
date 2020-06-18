@@ -1,5 +1,7 @@
 package Stock;
 
+import static extras.funcoes_uteis.print;
+
 public class Livro {
     private String titulo;
     private String autor;
@@ -35,4 +37,13 @@ public class Livro {
         return ano_edicao;
     }
 
+    public void show(){
+        print(
+            "Título: " + titulo + "\n" +
+            "Autor: " + autor + "\n" +
+            "Editora: " + editora + "\n" +
+            "ISBN: " + ISBN + "\n" +
+            "Ano Edicao: " + ano_edicao + "\n"
+        );
+    }
 }
